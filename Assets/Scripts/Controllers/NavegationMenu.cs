@@ -3,10 +3,14 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
-public class NavegationMenu : MonoBehaviour
+namespace BoardGame
 {
-	public void SwitchScene(string sceneName)
+
+	public class NavegationMenu : MonoBehaviour
 	{
-		SceneManager.LoadScene(sceneName, LoadSceneMode.Single);
+		public void SwitchScene(string sceneName)
+		{
+			SceneManager.LoadScene(sceneName, LoadSceneMode.Single);
+		}
 	}
 }
