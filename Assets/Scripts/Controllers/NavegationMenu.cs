@@ -1,6 +1,4 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 using UnityEngine.SceneManagement;
 
 namespace BoardGame
@@ -11,6 +9,11 @@ namespace BoardGame
 		public void SwitchScene(string sceneName)
 		{
 			SceneManager.LoadScene(sceneName, LoadSceneMode.Single);
+		}
+
+		public void ExitApp()
+		{
+			Application.Quit();
 		}
 	}
 }

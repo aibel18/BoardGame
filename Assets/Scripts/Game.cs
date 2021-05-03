@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 namespace BoardGame
 {
@@ -8,25 +9,29 @@ namespace BoardGame
 	public class Game : MonoBehaviour
 	{
 
-		private Canvas CanvasObject;
+		private Canvas UICanvas;
 		private IInputHandler InputHandler;
 
 		public BoardGrid Board { get; set; }
+		public Player[] Players { get; set; }
 
 		int count;
 
 		void Awake()
 		{
-			this.CanvasObject = GameObject.Find("Menu").GetComponent<Canvas>();
+			this.UICanvas = GameObject.Find("UI").GetComponent<Canvas>();
 			this.InputHandler = new GameInputHandler();
 			this.Board = new BoardGrid(16, 16);
+
+			this.Players =  new Player[2];
+			this.Players[0] = new Player();
+			this.Players[1] = new Player();
 		}
 
 		// Start is called before the first frame update
 		void Start()
 		{
 			this.count = 1;
-			this.CanvasObject.GetComponent<Canvas>().enabled = false;
 		}
 
 		// Update is called once per frame
@@ -37,10 +42,9 @@ namespace BoardGame
 			if (inputKey != Action.None)
 				print("KEY:" + inputKey);
 
-			if (this.count % 200 == 0)
+			if (this.count % 500 == 0)
 			{
-				this.CanvasObject.GetComponent<Canvas>().enabled = true;
-				// print("END GAME");
+				SceneManager.LoadScene("FinalMenu", LoadSceneMode.Single);
 			}
 			else
 			{
