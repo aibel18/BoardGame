@@ -5,7 +5,7 @@ namespace BoardGame
 
 	public class PickTile
 	{
-		public static TileComponent GetTile()
+		public static GameObject GetTile()
 		{
 			if (Input.GetMouseButtonUp(0))
 			{
@@ -15,7 +15,7 @@ namespace BoardGame
 				{
 					if (hit.collider.tag == "TilePrefab")
 					{
-						return hit.transform.gameObject.GetComponent<TileComponent>();
+						return hit.transform.gameObject;
 					}
 				}
 			}

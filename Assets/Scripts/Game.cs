@@ -8,10 +8,6 @@ namespace BoardGame
 
 	public class Game : MonoBehaviour
 	{
-
-		private Canvas UICanvas;
-		private IInputHandler InputHandler;
-
 		public BoardGrid Board { get; set; }
 		public Player[] Players { get; set; }
 
@@ -22,9 +18,7 @@ namespace BoardGame
 
 		void Awake()
 		{
-			this.UICanvas = GameObject.Find("UI").GetComponent<Canvas>();
-			this.InputHandler = new GameInputHandler();
-			this.Board = new BoardGrid(8, 8);
+			this.Board = new BoardGrid(10, 10);
 
 			this.Players = new Player[2];
 			this.Players[0] = new Player(5);
@@ -48,11 +42,7 @@ namespace BoardGame
 		// Update is called once per frame
 		void Update()
 		{
-			var inputKey = this.InputHandler.GetInput();
-
-			if (inputKey != Action.None)
-				print("KEY:" + inputKey);
-
+			// Fight between the Playres
 			if (this.IsFight)
 			{
 				if (!this.Players[0].FightState && !this.Players[1].FightState)
@@ -60,6 +50,7 @@ namespace BoardGame
 					this.Fight();
 				}
 			}
+			// Turn of the one Player
 			else
 			{
 				this.TurnPlayer();
@@ -75,29 +66,43 @@ namespace BoardGame
 
 		void TurnPlayer()
 		{
-
+			// Ending the Game
 			if (this.Players[0].Health <= 0 || this.Players[1].Health <= 0)
 			{
+				var indexWinner = this.Players[0].Health > this.Players[1].Health ? 0 : 1;
+
+				PlayerPrefs.SetString(KeyWordPersistence.NamePlayer, "Player " + indexWinner);
+				PlayerPrefs.SetString(KeyWordPersistence.HealthPlayer, "" + this.Players[indexWinner].Health);
+				PlayerPrefs.SetString(KeyWordPersistence.AttackPlayer, "" + this.Players[indexWinner].Attack);
+
 				SceneManager.LoadScene("FinalMenu", LoadSceneMode.Single);
 			}
 
-			if (this.Players[this.indexActivePlayer].Move <= 0)
+			// if you have no movements
+			if (!CanMove())
 			{
 				this.ChangeTurn();
 			}
+		}
+
+		public bool CanMove()
+		{
+			return this.Players[this.indexActivePlayer].Move > 0;
 		}
 
 		public bool IsValidMove(Vector2Int nextPosition)
 		{
 			var otherPlayerPosition = this.Players[this.GetIndexInactivePlayer()].Position;
 
+			// check only allowed neighbors
 			if (!MathUtil.DistanceMinorThan(this.Players[this.indexActivePlayer].Position, nextPosition, 1f))
 			{
 				return false;
 			}
-
+			// check do not overlap between the Players
 			if (otherPlayerPosition.x != nextPosition.x || otherPlayerPosition.y != nextPosition.y)
 				return true;
+
 			return false;
 		}
 
@@ -107,11 +112,7 @@ namespace BoardGame
 			this.Board.AddCharacter(nextPosition.x, nextPosition.y);
 			this.Players[this.indexActivePlayer].Move--;
 
-			VerifyFight();
-		}
-
-		void VerifyFight()
-		{
+			// check if it's a fight
 			if (MathUtil.DistanceMinorThan(this.Players[0].Position, this.Players[1].Position, 1f))
 			{
 				this.Players[0].FightState = true;
@@ -166,16 +167,6 @@ namespace BoardGame
 			this.Players[1].Move = MoveDefault;
 		}
 
-		public int GetIndexActivePlayer()
-		{
-			return this.indexActivePlayer;
-		}
-
-		public int GetIndexInactivePlayer()
-		{
-			return (this.indexActivePlayer + 1) % 2;
-		}
-
 		public void RollDives(int indexPlayer)
 		{
 			if (this.IsFight && this.Players[indexPlayer].FightState)
@@ -185,6 +176,15 @@ namespace BoardGame
 			}
 		}
 
+		public int GetIndexActivePlayer()
+		{
+			return this.indexActivePlayer;
+		}
+
+		public int GetIndexInactivePlayer()
+		{
+			return (this.indexActivePlayer + 1) % 2;
+		}
 
 	}
 }

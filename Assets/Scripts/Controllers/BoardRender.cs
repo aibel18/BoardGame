@@ -8,6 +8,10 @@ namespace BoardGame
 		public GameObject tilePrefab;
 		public GameObject characterPrefab;
 
+		public Material quadTile;
+		public Material quadTileEmpty;
+		public Material select;
+
 		public Text fightText;
 
 		public GameObject[] characterPlayer;
@@ -36,6 +40,11 @@ namespace BoardGame
 				{
 					GameObject tileObject = Instantiate(tilePrefab, new Vector3(x - midleX, -0.25f, z - midleZ), Quaternion.identity);
 
+					if (this.game.Board.IsEmpty(x, z))
+						tileObject.GetComponent<Renderer>().material = quadTileEmpty;
+					else
+						tileObject.GetComponent<Renderer>().material = quadTile;
+
 					tileObject.transform.SetParent(this.gameObject.transform, false);
 
 					var titleRender = tileObject.AddComponent<TileComponent>() as TileComponent;
@@ -52,6 +61,10 @@ namespace BoardGame
 
 				this.characterPlayer[i].transform.SetParent(this.gameObject.transform, false);
 			}
+
+			var playerIndex = this.game.GetIndexActivePlayer();
+
+			this.characterPlayer[playerIndex].GetComponent<Renderer>().material = select;
 		}
 
 		void Update()
@@ -63,17 +76,37 @@ namespace BoardGame
 			else
 			{
 				fightText.enabled = false;
-				TileComponent titleComponent = PickTile.GetTile();
+				GameObject titleObject = PickTile.GetTile();
 
-				if (titleComponent != null && this.game.IsValidMove(titleComponent.position))
+				if (titleObject == null)
+					return;
+
+				TileComponent titleComponent = titleObject.GetComponent<TileComponent>();
+
+				if (this.game.IsValidMove(titleComponent.position))
 				{
 					this.game.GainPlayer(titleComponent.collectable);
 
 					var playerIndex = this.game.GetIndexActivePlayer();
+					var otherPlayerIndex = this.game.GetIndexInactivePlayer();
+
 					var nextPosition = new Vector3(titleComponent.position.x - midleX, this.characterPlayer[playerIndex].transform.position.y, titleComponent.position.y - midleZ);
 					this.characterPlayer[playerIndex].transform.position = nextPosition;
 
 					this.game.MovedPlayer(titleComponent.position);
+
+					if (!this.game.CanMove())
+					{
+						this.characterPlayer[playerIndex].GetComponent<Renderer>().material = UnityEditor.AssetDatabase.GetBuiltinExtraResource<Material>("Default-Diffuse.mat");
+						this.characterPlayer[otherPlayerIndex].GetComponent<Renderer>().material = select;
+					}
+
+					Renderer titleRenderer = titleObject.GetComponent<Renderer>();
+
+					if (this.game.Board.IsEmpty(titleComponent.position.x, titleComponent.position.y))
+						titleRenderer.material = quadTileEmpty;
+					else
+						titleRenderer.material = quadTile;
 				}
 			}
 		}
