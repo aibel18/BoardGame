@@ -599,6 +599,7 @@ MonoBehaviour:
   quadTile: {fileID: 2100000, guid: f9e0c69b6c0103f4b93b1ea897fe77e2, type: 2}
   quadTileEmpty: {fileID: 2100000, guid: 34d3a079a189a8045855579e640baceb, type: 2}
   select: {fileID: 2100000, guid: 08ec696e6dc9fcd44af5eb50adfc325e, type: 2}
+  normal: {fileID: 2100000, guid: 00ae46e7691ab6a4cb5453d5bc11d5a7, type: 2}
   fightText: {fileID: 2032901095}
   characterPlayer: []
 --- !u!1 &385583396
@@ -1816,7 +1817,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 963194225}
   m_LocalRotation: {x: 0.3987491, y: 0, z: 0, w: 0.91706014}
-  m_LocalPosition: {x: 0, y: 14, z: -14}
+  m_LocalPosition: {x: 0, y: 16, z: -16}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
@@ -2321,6 +2322,7 @@ MonoBehaviour:
   - {fileID: 10666}
   - {fileID: 1366780161}
   state: {fileID: 2102393573}
+  roll: {fileID: 710941049}
   playerNumber: 0
   health: {fileID: 863107245}
   attack: {fileID: 1283215105}
@@ -3304,6 +3306,7 @@ MonoBehaviour:
   - {fileID: 406644174}
   - {fileID: 404514327}
   state: {fileID: 1782841590}
+  roll: {fileID: 512893426}
   playerNumber: 1
   health: {fileID: 1046937944}
   attack: {fileID: 1463182945}
@@ -3342,8 +3345,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 0.000005722, y: 311}
-  m_SizeDelta: {x: 285.4, y: 119.2}
+  m_AnchoredPosition: {x: -0.000011444, y: 175}
+  m_SizeDelta: {x: 494.7, y: 216.6}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &2032901095
 MonoBehaviour:
@@ -3365,11 +3368,11 @@ MonoBehaviour:
       m_Calls: []
   m_FontData:
     m_Font: {fileID: 10102, guid: 0000000000000000e000000000000000, type: 0}
-    m_FontSize: 42
+    m_FontSize: 72
     m_FontStyle: 1
     m_BestFit: 0
     m_MinSize: 3
-    m_MaxSize: 42
+    m_MaxSize: 72
     m_Alignment: 1
     m_AlignByGeometry: 0
     m_RichText: 0

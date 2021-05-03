@@ -12,7 +12,7 @@ namespace BoardGame
 
 		void Start()
 		{
-			this.player.text = PlayerPrefs.GetString(KeyWordPersistence.NamePlayer + 1);
+			this.player.text = PlayerPrefs.GetString(KeyWordPersistence.NamePlayer);
 			this.health.text = PlayerPrefs.GetString(KeyWordPersistence.HealthPlayer);
 		}
 	}

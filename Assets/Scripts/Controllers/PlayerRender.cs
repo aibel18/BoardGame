@@ -8,6 +8,7 @@ namespace BoardGame
 	{
 		public Button[] dices;
 		public Button state;
+		public GameObject roll;
 		public int playerNumber;
 		public Text health;
 		public Text attack;
@@ -28,6 +29,11 @@ namespace BoardGame
 			{
 				this.dices[i].GetComponentInChildren<Text>().text = "" + this.player.Dices.DiceValue[i];
 			}
+
+			if (this.player.FightState)
+				this.roll.SetActive(true);
+			else
+				this.roll.SetActive(false);
 
 			this.health.text = "" + this.player.Health;
 			this.attack.text = "" + this.player.Attack;

@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -11,10 +12,12 @@ namespace BoardGame
 		public Material quadTile;
 		public Material quadTileEmpty;
 		public Material select;
+		public Material normal;
 
 		public Text fightText;
 
 		public GameObject[] characterPlayer;
+		public GameObject[,] collectionables;
 		private Game game;
 
 		void Awake()
@@ -24,15 +27,19 @@ namespace BoardGame
 
 		float midleX;
 		float midleZ;
+		int lengthX;
+		int lengthZ;
 
 		void Start()
 		{
 
-			var lengthX = this.game.Board.Length(0);
-			var lengthZ = this.game.Board.Length(1);
+			lengthX = this.game.Board.Length(0);
+			lengthZ = this.game.Board.Length(1);
 
 			midleX = lengthX / 2 - 0.5f;
 			midleZ = lengthZ / 2 - 0.5f;
+
+			this.collectionables = new GameObject[lengthX, lengthZ];
 
 			for (int z = 0; z < lengthZ; ++z)
 			{
@@ -50,6 +57,8 @@ namespace BoardGame
 					var titleRender = tileObject.AddComponent<TileComponent>() as TileComponent;
 					titleRender.collectable = this.game.Board.Matrix[x, z];
 					titleRender.position = new Vector2Int(x, z);
+
+					this.collectionables[x, z] = tileObject;
 				}
 			}
 
@@ -95,10 +104,28 @@ namespace BoardGame
 
 					this.game.MovedPlayer(titleComponent.position);
 
+					// refull board
+					if (this.game.Board.VerifyTenPercent())
+					{
+						this.game.Board.ReFillBoard(this.game.Players[0].Position, this.game.Players[1].Position);
+
+						for (int z = 0; z < lengthZ; ++z)
+						{
+							for (int x = 0; x < lengthX; ++x)
+							{
+								if (this.game.Board.IsEmpty(x, z))
+									this.collectionables[x, z].GetComponent<Renderer>().material = quadTileEmpty;
+								else
+									this.collectionables[x, z].GetComponent<Renderer>().material = quadTile;
+
+							}
+						}
+					}
+
 					if (!this.game.CanMove())
 					{
-						this.characterPlayer[playerIndex].GetComponent<Renderer>().material = UnityEditor.AssetDatabase.GetBuiltinExtraResource<Material>("Default-Diffuse.mat");
-						this.characterPlayer[otherPlayerIndex].GetComponent<Renderer>().material = select;
+						this.characterPlayer[playerIndex].GetComponent<Renderer>().material = this.normal;
+						this.characterPlayer[otherPlayerIndex].GetComponent<Renderer>().material = this.select;
 					}
 
 					Renderer titleRenderer = titleObject.GetComponent<Renderer>();

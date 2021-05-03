@@ -18,7 +18,7 @@ namespace BoardGame
 
 		void Awake()
 		{
-			this.Board = new BoardGrid(10, 10);
+			this.Board = new BoardGrid(12, 12);
 
 			this.Players = new Player[2];
 			this.Players[0] = new Player(5);
@@ -71,7 +71,7 @@ namespace BoardGame
 			{
 				var indexWinner = this.Players[0].Health > this.Players[1].Health ? 0 : 1;
 
-				PlayerPrefs.SetString(KeyWordPersistence.NamePlayer, "Player " + indexWinner);
+				PlayerPrefs.SetString(KeyWordPersistence.NamePlayer, "Player " + (indexWinner + 1));
 				PlayerPrefs.SetString(KeyWordPersistence.HealthPlayer, "" + this.Players[indexWinner].Health);
 				PlayerPrefs.SetString(KeyWordPersistence.AttackPlayer, "" + this.Players[indexWinner].Attack);
 

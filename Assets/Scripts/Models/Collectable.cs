@@ -17,6 +17,11 @@ namespace BoardGame
 
 		public Collectable(int type, int amountGain)
 		{
+			this.InitCollectable(type, amountGain);
+		}
+
+		public void InitCollectable(int type, int amountGain)
+		{
 			this.Type = CollectableTypes[type];
 			this.AmountGain = amountGain;
 		}
