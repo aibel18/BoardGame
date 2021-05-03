@@ -5,18 +5,19 @@ namespace BoardGame
 		ExtraMove,
 		ExtraAttack,
 		RecoverHealth,
-		Empty,
-		PlayerHere
+		Empty
 	}
 
-	public struct Collectable
+	public class Collectable
 	{
+		static CollectableType[] CollectableTypes = { CollectableType.ExtraAttack, CollectableType.ExtraMove, CollectableType.RecoverHealth };
+
 		public CollectableType Type { get; set; }
 		public int AmountGain { get; set; }
 
-		public Collectable(CollectableType type, int amountGain)
+		public Collectable(int type, int amountGain)
 		{
-			this.Type = type;
+			this.Type = CollectableTypes[type];
 			this.AmountGain = amountGain;
 		}
 	}

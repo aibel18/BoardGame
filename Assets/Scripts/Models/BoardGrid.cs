@@ -2,9 +2,6 @@ namespace BoardGame
 {
 	public class BoardGrid
 	{
-
-		CollectableType[] types = { CollectableType.ExtraAttack, CollectableType.ExtraMove, CollectableType.RecoverHealth };
-
 		public Collectable[,] Matrix { get; set; }
 
 		public BoardGrid(int width, int height)
@@ -22,22 +19,12 @@ namespace BoardGame
 			{
 				for (int x = 0; x < lengthX; ++x)
 				{
-					this.Matrix[z, x] = new Collectable()
-					{
-						Type = types[UnityEngine.Random.Range(0, 3)],
-						AmountGain = UnityEngine.Random.Range(1, 3)
-					};
+					this.Matrix[z, x] = new Collectable(UnityEngine.Random.Range(0, 3), UnityEngine.Random.Range(1, 5));
 				}
 			}
 		}
 
 		public void AddCharacter(int posX, int posZ)
-		{
-			this.Matrix[posX, posZ].Type = CollectableType.PlayerHere;
-			this.Matrix[posX, posZ].AmountGain = 0;
-		}
-
-		public void UseCollectable(int posX, int posZ)
 		{
 			this.Matrix[posX, posZ].Type = CollectableType.Empty;
 			this.Matrix[posX, posZ].AmountGain = 0;
@@ -52,12 +39,6 @@ namespace BoardGame
 		{
 			return this.Matrix[posX, posZ].Type == CollectableType
 			.Empty;
-		}
-
-		public bool IsPlayerHere(int posX, int posZ)
-		{
-			return this.Matrix[posX, posZ].Type == CollectableType
-			.PlayerHere;
 		}
 
 		public int Length(int n)

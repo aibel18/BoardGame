@@ -13,6 +13,7 @@ namespace BoardGame
 		public int playerNumber;
 		public Text health;
 		public Text attack;
+		public Text move;
 
 		private Player player;
 
@@ -27,10 +28,12 @@ namespace BoardGame
 		{
 			for (int i = 0; i < dices.Length; i++)
 			{
-				this.dices[i].GetComponentInChildren<Text>().text = "" + this.player.Dices.DiceValues[i];
+				this.dices[i].GetComponentInChildren<Text>().text = "" + this.player.Dices.DiceValue[i];
 			}
+
 			this.health.text = "" + this.player.Health;
 			this.attack.text = "" + this.player.Attack;
+			this.move.text = "" + this.player.Move;
 
 			this.state.GetComponent<Image>().color = this.player.State ? Color.green : Color.clear;
 

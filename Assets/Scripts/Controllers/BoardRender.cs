@@ -1,4 +1,5 @@
 using UnityEngine;
+using UnityEngine.UI;
 
 namespace BoardGame
 {
@@ -6,6 +7,8 @@ namespace BoardGame
 	{
 		public GameObject tilePrefab;
 		public GameObject characterPrefab;
+
+		public Text fightText;
 
 		public GameObject[] characterPlayer;
 		private Game game;
@@ -53,14 +56,25 @@ namespace BoardGame
 
 		void Update()
 		{
-			TileComponent titleComponent = PickTile.GetTile();
-
-			if (titleComponent != null)
+			if (this.game.IsFight)
 			{
-				var playerIndex = this.game.MovePlayer(titleComponent.position);
+				fightText.enabled = true;
+			}
+			else
+			{
+				fightText.enabled = false;
+				TileComponent titleComponent = PickTile.GetTile();
 
-				var nextPosition = new Vector3(this.game.Players[playerIndex].Position.x - midleX, this.characterPlayer[playerIndex].transform.position.y, this.game.Players[playerIndex].Position.y - midleZ);
-				this.characterPlayer[playerIndex].transform.position = nextPosition;
+				if (titleComponent != null && this.game.IsValidMove(titleComponent.position))
+				{
+					this.game.GainPlayer(titleComponent.collectable);
+
+					var playerIndex = this.game.GetIndexActivePlayer();
+					var nextPosition = new Vector3(titleComponent.position.x - midleX, this.characterPlayer[playerIndex].transform.position.y, titleComponent.position.y - midleZ);
+					this.characterPlayer[playerIndex].transform.position = nextPosition;
+
+					this.game.MovedPlayer(titleComponent.position);
+				}
 			}
 		}
 
