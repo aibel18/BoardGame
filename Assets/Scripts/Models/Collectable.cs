@@ -5,12 +5,19 @@ namespace BoardGame
 		ExtraMove,
 		ExtraAttack,
 		RecoverHealth,
-		ExtraDices
+		Empty,
+		PlayerHere
 	}
 
 	public struct Collectable
 	{
 		public CollectableType Type { get; set; }
-		public byte AmountGain { get; set; }
+		public int AmountGain { get; set; }
+
+		public Collectable(CollectableType type, int amountGain)
+		{
+			this.Type = type;
+			this.AmountGain = amountGain;
+		}
 	}
 }

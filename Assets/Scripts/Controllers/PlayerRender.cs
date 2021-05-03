@@ -9,6 +9,7 @@ namespace BoardGame
 	public class PlayerRender : MonoBehaviour
 	{
 		public Button[] dices;
+		public Button state;
 		public int playerNumber;
 		public Text health;
 		public Text attack;
@@ -26,10 +27,13 @@ namespace BoardGame
 		{
 			for (int i = 0; i < dices.Length; i++)
 			{
-				this.dices[i].GetComponentInChildren<Text>().text = ""+this.player.Dices.DiceValues[i];
+				this.dices[i].GetComponentInChildren<Text>().text = "" + this.player.Dices.DiceValues[i];
 			}
-			this.health.text = "" + this.player.Character.Health;
-			this.attack.text = "" + this.player.Character.Attack;
+			this.health.text = "" + this.player.Health;
+			this.attack.text = "" + this.player.Attack;
+
+			this.state.GetComponent<Image>().color = this.player.State ? Color.green : Color.clear;
+
 		}
 	}
 }

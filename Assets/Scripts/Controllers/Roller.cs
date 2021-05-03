@@ -7,16 +7,20 @@ namespace BoardGame
 	public class Roller : MonoBehaviour
 	{
 		public int playerNumber;
-		public IRollEvent eventRoll;
+		private Player player;
 
 		void Start()
 		{
-			this.eventRoll = GameObject.Find("Game").GetComponent<Game>().Players[playerNumber].Dices;
+			this.player = GameObject.Find("Game").GetComponent<Game>().Players[playerNumber];
 		}
 
 		public void RollDices()
 		{
-			this.eventRoll.RollDices();
+			if (this.player.State)
+			{
+				this.player.Dices.RollDices();
+			}
+
 		}
 	}
 }
